@@ -1,0 +1,24 @@
+{
+  "name": "employee-tracker",
+  "version": "1.0.0",
+  "description": "A CMS built in the command-line for tracking employees.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Connerjm/Employee-Tracker.git"
+  },
+  "author": "Conner Martin",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/Connerjm/Employee-Tracker/issues"
+  },
+  "homepage": "https://github.com/Connerjm/Employee-Tracker#readme",
+  "dependencies": {
+    "inquirer": "^8.0.0",
+    "mysql": "^2.18.1"
+  }
+}
