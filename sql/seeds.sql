@@ -16,13 +16,15 @@ VALUE ("Anbu Black Ops", 85865.00, 3),
 ("Student", 3900, 1),
 ("Hokage", 187353.00, 4);
 
-INSERT INTO employee (first_name, role_id)
-VALUE ("Kakashi", 6);
+INSERT INTO employee (first_name, last_name, role_id)
+VALUE ("Kakashi", NULL, 6),
+("Might", "Guy", 6);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUE ("Naruto", "Uzumaki", 7, 1),
 ("Sakura", "Haruno", 7, 1),
 ("Sasuke", "Uchiha", 7, 1),
-("Konohamaru", "Sarutobi", 7, 2);
-
-SELECT * FROM employee;
+("Rock", "Lee", 7, 2),
+("Neji", "Hyuga", 7, 2),
+("Tenten", NULL, 7, 2),
+("Konohamaru", "Sarutobi", 7, 3);
