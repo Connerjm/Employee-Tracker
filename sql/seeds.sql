@@ -7,14 +7,14 @@ VALUE ("Genin"),
 ("Kage");
 
 INSERT INTO role (title, salary, department_id)
-VALUE ("Anbu Black Ops", 100000.00, 3),
-("Chef", "40000.00", 2),
-("Courier", "55000.00", 2),
-("Tracker", 75000.00, 3),
-("Medic", 60000.00, 2),
-("Sensei", 45000.00, 3),
-("Student", 0, 1),
-("Hokage", 1000000.00, 4);
+VALUE ("Anbu Black Ops", 85865.00, 3),
+("Chef", 32538.00, 2),
+("Courier", 45210.00, 2),
+("Tracker", 50510.00, 3),
+("Medic", 43775.00, 2),
+("Sensei", 44264.00, 3),
+("Student", 3900, 1),
+("Hokage", 187353.00, 4);
 
 INSERT INTO employee (first_name, role_id)
 VALUE ("Kakashi", 6);
