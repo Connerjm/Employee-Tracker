@@ -1,7 +1,12 @@
+/* Imports. */
+
 const { defaultPrompt } = require("./lib/questions");
-const { getAllEmployees } = require("./lib/queries");
+const { open, close, getAllEmployees } = require("./lib/queries");
 const cTable = require("console.table");
 
+/* Main functions. */
+
+//Initializing function.
 async function init()
 {
     //Look... Just know that this is ascii art. I know it looks like I had a stroke, don't worry about it.
@@ -30,13 +35,14 @@ async function init()
 |         /\:/  /        /\:/  /        /\:/  /        /\:/  /       \\\:\:/  /       \\\:\\__\\        |\:|  |          |
 |         \\/__/         \\/__/         \\/__/         \\/__/         \\/__/         \\/__/         \\|__|          |
 --------------------------------------------------------------------------------------------------------------`);
-    let answers = await defaultPrompt();
-    whatNext(answers.action);
+    open();//Opens the database connection.
+    let answers = await defaultPrompt();//Runs initial prompt.
+    whatNext(answers.action);//Decides what action to do next.
 }
 
+//Takes the selection from the entry prompt and decides which queries to run.
 function whatNext(option)
 {
-    console.log(option);
     switch (option)
     {
         case "View all employees":
@@ -78,7 +84,16 @@ function whatNext(option)
         case "Remove department":
             //TODO
             break;
+        case "All done!":
+            console.log("Thank you for using Employee Tracker.");
+            close();//Closes the database connection.
+            process.exit();//Ends the program process.
     }
 }
 
+/* Helper functions. */
+
+/* Function calls. */
+
+//Calls initializing function.
 init();
