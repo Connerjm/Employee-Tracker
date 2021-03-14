@@ -1,5 +1,5 @@
-const { defaultPrompt } = require("./lib/inquirerjs");
-const { getAllEmployees } = require("./lib/mysqljs");
+const { defaultPrompt } = require("./lib/questions");
+const { getAllEmployees } = require("./lib/queries");
 const cTable = require("console.table");
 
 async function init()
