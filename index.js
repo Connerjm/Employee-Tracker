@@ -1,6 +1,8 @@
 const { defaultPrompt } = require("./lib/inquirerjs");
+const { getAllEmployees } = require("./lib/mysqljs");
+const cTable = require("console.table");
 
-function init()
+async function init()
 {
     //Look... Just know that this is ascii art. I know it looks like I had a stroke, don't worry about it.
     console.log(`
@@ -28,7 +30,55 @@ function init()
 |         /\:/  /        /\:/  /        /\:/  /        /\:/  /       \\\:\:/  /       \\\:\\__\\        |\:|  |          |
 |         \\/__/         \\/__/         \\/__/         \\/__/         \\/__/         \\/__/         \\|__|          |
 --------------------------------------------------------------------------------------------------------------`);
-    defaultPrompt();
+    let answers = await defaultPrompt();
+    whatNext(answers.action);
+}
+
+function whatNext(option)
+{
+    console.log(option);
+    switch (option)
+    {
+        case "View all employees":
+            //TODO
+            break;
+        case "View all employees by department":
+            //TODO
+            break;
+        case "View all employees by manager":
+            //TODO
+            break;
+        case "Add employee":
+            //TODO
+            break;
+        case "Remove employee":
+            //TODO
+            break;
+        case "Update employee role":
+            //TODO
+            break;
+        case "Update employee manager":
+            //TODO
+            break;
+        case "View all roles":
+            //TODO
+            break;
+        case "Add role":
+            //TODO
+            break;
+        case "Remove role":
+            //TODO
+            break;
+        case "View all departments":
+            //TODO
+            break;
+        case "Add department":
+            //TODO
+            break;
+        case "Remove department":
+            //TODO
+            break;
+    }
 }
 
 init();
