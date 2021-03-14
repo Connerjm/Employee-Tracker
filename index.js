@@ -2,12 +2,11 @@
 
 const { defaultPrompt } = require("./lib/questions");
 const { open, close, getAllEmployees } = require("./lib/queries");
-const cTable = require("console.table");
 
 /* Main functions. */
 
 //Initializing function.
-async function init()
+function init()
 {
     //Look... Just know that this is ascii art. I know it looks like I had a stroke, don't worry about it.
     console.log(`
@@ -36,6 +35,11 @@ async function init()
 |         \\/__/         \\/__/         \\/__/         \\/__/         \\/__/         \\/__/         \\|__|          |
 --------------------------------------------------------------------------------------------------------------`);
     open();//Opens the database connection.
+    basicPrompt();
+}
+
+async function basicPrompt()
+{
     let answers = await defaultPrompt();//Runs initial prompt.
     whatNext(answers.action);//Decides what action to do next.
 }
@@ -46,7 +50,7 @@ function whatNext(option)
     switch (option)
     {
         case "View all employees":
-            //TODO
+            getAllEmployees();
             break;
         case "View all employees by department":
             //TODO
@@ -92,6 +96,8 @@ function whatNext(option)
 }
 
 /* Helper functions. */
+
+
 
 /* Function calls. */
 
