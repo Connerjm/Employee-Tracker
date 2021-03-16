@@ -66,7 +66,7 @@ function whatNext(option)
 
 function viewAllEmployees()
 {
-    getAllEmployees();
+    getAllEmployees(basicPrompt);
 }
 
 async function viewAllEmployeesByDepartment()
@@ -77,7 +77,7 @@ async function viewAllEmployeesByDepartment()
         //Prompt the user to get the chosen department.
         let chosenDepartment = await viewEmployeesByDepartmentPrompt(result.map(element => element.name));
         //Get and print the employees by chosen department.
-        getEmployeesByDepartment(result.find(element => element.name === chosenDepartment.department).id);
+        getEmployeesByDepartment(result.find(element => element.name === chosenDepartment.department).id, basicPrompt);
     });
 }
 
