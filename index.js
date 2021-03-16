@@ -1,7 +1,7 @@
 /* Imports. */
 
-const { defaultPrompt } = require("./lib/questions");
-const { open, close, getAllEmployees } = require("./lib/queries");
+const { defaultPrompt, viewEmployeesByDepartmentPrompt } = require("./lib/questions");
+const { open, close, getAllEmployees, getEmployeesByDepartment, getAllDepartments } = require("./lib/queries");
 
 /* Main functions. */
 
@@ -50,43 +50,10 @@ function whatNext(option)
     switch (option)
     {
         case "View all employees":
-            getAllEmployees();
+            viewAllEmployees()
             break;
         case "View all employees by department":
-            //TODO
-            break;
-        case "View all employees by manager":
-            //TODO
-            break;
-        case "Add employee":
-            //TODO
-            break;
-        case "Remove employee":
-            //TODO
-            break;
-        case "Update employee role":
-            //TODO
-            break;
-        case "Update employee manager":
-            //TODO
-            break;
-        case "View all roles":
-            //TODO
-            break;
-        case "Add role":
-            //TODO
-            break;
-        case "Remove role":
-            //TODO
-            break;
-        case "View all departments":
-            //TODO
-            break;
-        case "Add department":
-            //TODO
-            break;
-        case "Remove department":
-            //TODO
+            viewAllEmployeesByDepartment();
             break;
         case "All done!":
             console.log("Thank you for using Employee Tracker.");
@@ -97,7 +64,22 @@ function whatNext(option)
 
 /* Helper functions. */
 
+function viewAllEmployees()
+{
+    getAllEmployees();
+}
 
+async function viewAllEmployeesByDepartment()
+{
+    //Get all the departments.
+    getAllDepartments(async result =>
+    {
+        //Prompt the user to get the chosen department.
+        let chosenDepartment = await viewEmployeesByDepartmentPrompt(result.map(element => element.name));
+        //Get and print the employees by chosen department.
+        getEmployeesByDepartment(result.find(element => element.name === chosenDepartment.department).id);
+    });
+}
 
 /* Function calls. */
 
