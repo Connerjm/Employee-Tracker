@@ -1,7 +1,7 @@
 /* Imports. */
 
-const { defaultPrompt, viewEmployeesByDepartmentPrompt } = require("./lib/questions");
-const { open, close, getAllEmployees, getEmployeesByDepartment, getAllDepartments } = require("./lib/queries");
+const { defaultPrompt, viewEmployeesByDepartmentPrompt, viewEmployeesByManagerPrompt } = require("./lib/questions");
+const { open, close, getAllEmployees, getEmployeesByDepartment, getEmployeesByManager, getAllDepartments, getAllManagers } = require("./lib/queries");
 
 /* Main functions. */
 
@@ -55,6 +55,9 @@ function whatNext(option)
         case "View all employees by department":
             viewAllEmployeesByDepartment();
             break;
+        case "View all employees by manager":
+            viewAllEmployeesByManager();
+            break;
         case "All done!":
             console.log("Thank you for using Employee Tracker.");
             close();//Closes the database connection.
@@ -69,7 +72,7 @@ function viewAllEmployees()
     getAllEmployees(basicPrompt);
 }
 
-async function viewAllEmployeesByDepartment()
+function viewAllEmployeesByDepartment()
 {
     //Get all the departments.
     getAllDepartments(async result =>
@@ -78,6 +81,22 @@ async function viewAllEmployeesByDepartment()
         let chosenDepartment = await viewEmployeesByDepartmentPrompt(result.map(element => element.name));
         //Get and print the employees by chosen department.
         getEmployeesByDepartment(result.find(element => element.name === chosenDepartment.department).id, basicPrompt);
+    });
+}
+
+function viewAllEmployeesByManager()
+{
+    getAllManagers(async result =>
+    {
+        let chosenManager = await viewEmployeesByManagerPrompt(result.map(element => element.first_name + " " + element.last_name));
+        let id;
+        result.forEach(element =>
+        {
+            let names = chosenManager.manager.split(" ");
+            if (element.first_name == names[0] && element.last_name == names[1])
+                id = element.id;
+        });
+        getEmployeesByManager(id, basicPrompt);
     });
 }
 
