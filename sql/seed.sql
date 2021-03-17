@@ -18,7 +18,11 @@ VALUE ("Anbu Black Ops", 85865.00, 3),
 
 INSERT INTO employee (first_name, last_name, role_id)
 VALUE ("Kakashi", "Hatake", 6),
-("Might", "Guy", 6);
+("Might", "Guy", 6),
+("Zabuza", "Momochi", 6),
+("Teuchi", "N/A", 2),
+("Hakkaku", "N/A", 2),
+("Hiruzen", "Sarutobi", 8);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUE ("Naruto", "Uzumaki", 7, 1),
@@ -27,4 +31,5 @@ VALUE ("Naruto", "Uzumaki", 7, 1),
 ("Rock", "Lee", 7, 2),
 ("Neji", "Hyuga", 7, 2),
 ("Tenten", "N/A", 7, 2),
-("Konohamaru", "Sarutobi", 7, 3);
+("Konohamaru", "Sarutobi", 7, 7),
+("Haku", "N/A", 4, 3);
