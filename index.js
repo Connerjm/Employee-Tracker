@@ -26,7 +26,8 @@ const {
     updateEmployeeManagerRoleQuery,
     printAllRolesQuery,
     addRoleQuery,
-    deleteRoleQuery } = require("./lib/queries");
+    deleteRoleQuery,
+    printAllDepartmentsQuery } = require("./lib/queries");
 
 /* Main functions. */
 
@@ -103,6 +104,9 @@ function whatNext(option)
             break;
         case "Remove role":
             removeRole();
+            break;
+        case "View all departments":
+            viewAllDepartments();
             break;
         case "All done!":
             console.log("Thank you for using Employee Tracker.");
@@ -248,6 +252,11 @@ function removeRole()
         let chosenRole = await removeRolePrompt(roles.map(element => element.title));
         deleteRoleQuery(roles.find(element => element.title === chosenRole.role).id, basicPrompt);
     });
+}
+
+function viewAllDepartments()
+{
+    printAllDepartmentsQuery(basicPrompt);
 }
 
 /* Function calls. */
