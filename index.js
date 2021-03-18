@@ -9,7 +9,8 @@ const {
     updateEmployeeRolePrompt,
     updateEmployeeManagerPrompt,
     addRolePrompt,
-    removeRolePrompt } = require("./lib/questions");
+    removeRolePrompt,
+    addDepartmentPrompt } = require("./lib/questions");
 const {
     open,
     close,
@@ -27,7 +28,8 @@ const {
     printAllRolesQuery,
     addRoleQuery,
     deleteRoleQuery,
-    printAllDepartmentsQuery } = require("./lib/queries");
+    printAllDepartmentsQuery,
+    addDepartmentQuery } = require("./lib/queries");
 
 /* Main functions. */
 
@@ -107,6 +109,9 @@ function whatNext(option)
             break;
         case "View all departments":
             viewAllDepartments();
+            break;
+        case "Add department":
+            addDepartment();
             break;
         case "All done!":
             console.log("Thank you for using Employee Tracker.");
@@ -257,6 +262,12 @@ function removeRole()
 function viewAllDepartments()
 {
     printAllDepartmentsQuery(basicPrompt);
+}
+
+async function addDepartment()
+{
+    let name = await addDepartmentPrompt();
+    addDepartmentQuery(name.department, basicPrompt);
 }
 
 /* Function calls. */
