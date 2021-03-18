@@ -180,7 +180,7 @@ function addEmployee()
     getAllRolesQuery(async roles =>
     {
         //Get all employees.
-        getAllManagersQuery(async managers =>
+        getAllEmployeesQuery(async managers =>
         {
             //Gets info from the user.
             let answers = await addEmployeePrompt(roles.map(element => element.title), managers.map(element => element.first_name + " " + element.last_name));
