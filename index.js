@@ -11,7 +11,8 @@ const {
     addRolePrompt,
     removeRolePrompt,
     addDepartmentPrompt,
-    removeDepartmentPrompt } = require("./lib/questions");
+    removeDepartmentPrompt,
+    getBudgetByDepartmentPrompt } = require("./lib/questions");
 const {
     open,
     close,
@@ -31,7 +32,8 @@ const {
     deleteRoleQuery,
     printAllDepartmentsQuery,
     addDepartmentQuery,
-    removeDepartmentQuery } = require("./lib/queries");
+    removeDepartmentQuery,
+    printBudgetForDepartmentQuery } = require("./lib/queries");
 
 /* Main functions. */
 
@@ -117,6 +119,9 @@ function whatNext(option)
             break;
         case "Remove department":
             removeDepartment();
+            break;
+        case "Get budget for a department":
+            getBudgetByDepartment();
             break;
         case "All done!":
             console.log("Thank you for using Employee Tracker.");
@@ -281,6 +286,15 @@ function removeDepartment()
     {
         let chosenDepartment = await removeDepartmentPrompt(departments.map(element => element.name));
         removeDepartmentQuery(departments.find(element => element.name === chosenDepartment.department).id, basicPrompt);
+    });
+}
+
+function getBudgetByDepartment()
+{
+    getAllDepartmentsQuery(async departments =>
+    {
+        let chosenDepartment = await getBudgetByDepartmentPrompt(departments.map(element => element.name));
+        printBudgetForDepartmentQuery(departments.find(element => element.name === chosenDepartment.department).id, basicPrompt);
     });
 }
 

@@ -20,3 +20,6 @@ SELECT first_name AS "First Name", last_name AS "Last Name", title AS Title FROM
 
 -- Gets all managers. --
 SELECT DISTINCT e1.id, e1.first_name, e1.last_name FROM employee e1, employee e2 WHERE e1.id = e2.manager_id;
+
+-- Gets the budget for a chosen department. --
+SELECT FORMAT(SUM(salary), 2) AS Budget FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id WHERE department.id = 1;
