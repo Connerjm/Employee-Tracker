@@ -1,7 +1,7 @@
 /* Imports. */
 
-const { defaultPrompt, viewEmployeesByDepartmentPrompt, viewEmployeesByManagerPrompt } = require("./lib/questions");
-const { open, close, getAllEmployees, getEmployeesByDepartment, getEmployeesByManager, getAllDepartments, getAllManagers } = require("./lib/queries");
+const { defaultPrompt, viewEmployeesByDepartmentPrompt, viewEmployeesByManagerPrompt, addEmployeePrompt } = require("./lib/questions");
+const { open, close, getAllEmployees, getEmployeesByDepartment, getEmployeesByManager, getAllDepartments, getAllManagers, getAllRoles, addEmployeeQuery } = require("./lib/queries");
 
 /* Main functions. */
 
@@ -58,6 +58,9 @@ function whatNext(option)
         case "View all employees by manager":
             viewAllEmployeesByManager();
             break;
+        case "Add employee":
+            addEmployee()
+            break;
         case "All done!":
             console.log("Thank you for using Employee Tracker.");
             close();//Closes the database connection.
@@ -97,6 +100,26 @@ function viewAllEmployeesByManager()
                 id = element.id;
         });
         getEmployeesByManager(id, basicPrompt);
+    });
+}
+
+function addEmployee()
+{
+    getAllRoles(async roles =>
+    {
+        getAllManagers(async managers =>
+        {
+            let answers = await addEmployeePrompt(roles.map(element => element.title), managers.map(element => element.first_name + " " + element.last_name));
+            let roleId = roles.find(element => element.title === answers.role).id;
+            let managerId;
+            managers.forEach(element =>
+                {
+                    let names = answers.manager.split(" ");
+                    if (element.first_name == names[0] && element.last_name == names[1])
+                        managerId = element.id;
+                });
+            addEmployeeQuery(answers.first_name, answers.last_name, roleId, managerId, basicPrompt);
+        });
     });
 }
 
