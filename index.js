@@ -4,7 +4,8 @@ const {
     defaultPrompt,
     viewEmployeesByDepartmentPrompt,
     viewEmployeesByManagerPrompt,
-    addEmployeePrompt } = require("./lib/questions");
+    addEmployeePrompt,
+    removeEmployeePrompt } = require("./lib/questions");
 const {
     open,
     close,
@@ -14,7 +15,9 @@ const {
     getAllDepartmentsQuery,
     getAllManagersQuery,
     getAllRolesQuery,
-    addEmployeeQuery } = require("./lib/queries");
+    addEmployeeQuery,
+    getAllEmployeesQuery,
+    deleteEmployeeQuery } = require("./lib/queries");
 
 /* Main functions. */
 
@@ -72,7 +75,10 @@ function whatNext(option)
             viewAllEmployeesByManager();
             break;
         case "Add employee":
-            addEmployee()
+            addEmployee();
+            break;
+        case "Remove employee":
+            removeEmployee();
             break;
         case "All done!":
             console.log("Thank you for using Employee Tracker.");
@@ -134,6 +140,22 @@ function addEmployee()
             addEmployeeQuery(answers.first_name, answers.last_name, roleId, managerId, basicPrompt);
         });
     });
+}
+
+function removeEmployee()
+{
+    getAllEmployeesQuery(async result =>
+        {
+            let chosenEmployee = await removeEmployeePrompt(result.map(element => element.first_name + " " + element.last_name));
+            let id;
+            result.forEach(element =>
+            {
+                let names = chosenEmployee.employee.split(" ");
+                if (element.first_name == names[0] && element.last_name == names[1])
+                    id = element.id;
+            });
+            deleteEmployeeQuery(id, basicPrompt);
+        });
 }
 
 /* Function calls. */
