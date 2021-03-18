@@ -10,30 +10,42 @@
 
 ## Description
 
-This is a command line application for tracking employees. This will be done utilizing Node, Inquirer, and MySQL.
+This is a command line application for tracking employees. This will be done utilizing Node, Inquirer, and MySQL. Utilizing the application, the user will be prompted with a series of options, such as adding, altering, removing, or simplye viewing entries for employees, roles, or managers. All printed information uses console.table package to format the data nice and clean.
 
 ## Features
 
-Users of this application are able to...
+Users of this application are able to:
 
-- [ ] Add departments, roles, and employees.
-- [ ] View departments, roles, and employees.
-- [ ] Update employee roles.
+- [x] Add departments, roles, and employees.
+- [x] View departments, roles, and employees.
+- [x] Update employee roles.
 
 ------------------------Bonus----------------------------
 
-- [ ] Update employee managers.
-- [ ] View employees by manager.
-- [ ] Delete departments, roles, and employees.
-- [ ] View the total utilized budget of a deparment.
+- [x] Update employee managers.
+- [x] View employees by manager.
+- [x] Delete departments, roles, and employees.
+- [x] View the total utilized budget of a deparment.
 
 ## Usage
 
 Install application.
 
+```bash
+git clone https://github.com/Connerjm/Employee-Tracker.git
+```
+
 Install dependencies.
 
+```bash
+npm i
+```
+
 Run application.
+
+```bash
+npm start
+```
 
 ## Demonstration
 
