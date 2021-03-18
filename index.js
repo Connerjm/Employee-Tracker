@@ -1,7 +1,20 @@
 /* Imports. */
 
-const { defaultPrompt, viewEmployeesByDepartmentPrompt, viewEmployeesByManagerPrompt, addEmployeePrompt } = require("./lib/questions");
-const { open, close, getAllEmployees, getEmployeesByDepartment, getEmployeesByManager, getAllDepartments, getAllManagers, getAllRoles, addEmployeeQuery } = require("./lib/queries");
+const {
+    defaultPrompt,
+    viewEmployeesByDepartmentPrompt,
+    viewEmployeesByManagerPrompt,
+    addEmployeePrompt } = require("./lib/questions");
+const {
+    open,
+    close,
+    printAllEmployeesQuery,
+    printEmployeesByDepartmentQuery,
+    printEmployeesByManagerQuery,
+    getAllDepartmentsQuery,
+    getAllManagersQuery,
+    getAllRolesQuery,
+    addEmployeeQuery } = require("./lib/queries");
 
 /* Main functions. */
 
@@ -72,24 +85,24 @@ function whatNext(option)
 
 function viewAllEmployees()
 {
-    getAllEmployees(basicPrompt);
+    printAllEmployeesQuery(basicPrompt);
 }
 
 function viewAllEmployeesByDepartment()
 {
     //Get all the departments.
-    getAllDepartments(async result =>
+    getAllDepartmentsQuery(async result =>
     {
         //Prompt the user to get the chosen department.
         let chosenDepartment = await viewEmployeesByDepartmentPrompt(result.map(element => element.name));
         //Get and print the employees by chosen department.
-        getEmployeesByDepartment(result.find(element => element.name === chosenDepartment.department).id, basicPrompt);
+        printEmployeesByDepartmentQuery(result.find(element => element.name === chosenDepartment.department).id, basicPrompt);
     });
 }
 
 function viewAllEmployeesByManager()
 {
-    getAllManagers(async result =>
+    getAllManagersQuery(async result =>
     {
         let chosenManager = await viewEmployeesByManagerPrompt(result.map(element => element.first_name + " " + element.last_name));
         let id;
@@ -99,15 +112,15 @@ function viewAllEmployeesByManager()
             if (element.first_name == names[0] && element.last_name == names[1])
                 id = element.id;
         });
-        getEmployeesByManager(id, basicPrompt);
+        printEmployeesByManagerQuery(id, basicPrompt);
     });
 }
 
 function addEmployee()
 {
-    getAllRoles(async roles =>
+    getAllRolesQuery(async roles =>
     {
-        getAllManagers(async managers =>
+        getAllManagersQuery(async managers =>
         {
             let answers = await addEmployeePrompt(roles.map(element => element.title), managers.map(element => element.first_name + " " + element.last_name));
             let roleId = roles.find(element => element.title === answers.role).id;
