@@ -26,7 +26,7 @@ const {
     getAllEmployeesQuery,
     deleteEmployeeQuery,
     updateEmployeeRoleQuery,
-    updateEmployeeManagerRoleQuery,
+    updateEmployeeManagerQuery,
     printAllRolesQuery,
     addRoleQuery,
     deleteRoleQuery,
@@ -67,9 +67,10 @@ function init()
 |         \\/__/         \\/__/         \\/__/         \\/__/         \\/__/         \\/__/         \\|__|          |
 --------------------------------------------------------------------------------------------------------------`);
     open();//Opens the database connection.
-    basicPrompt();
+    basicPrompt();//Default prompt before any specific action begins.
 }
 
+//Basic function that is called after each branch to determine next action.
 async function basicPrompt()
 {
     let answers = await defaultPrompt();//Runs initial prompt.
@@ -81,8 +82,8 @@ function whatNext(option)
 {
     switch (option)
     {
-        case "View all employees":
-            viewAllEmployees()
+        case "View all employees"://Check option.
+            viewAllEmployees()//Run assossiated function.
             break;
         case "View all employees by department":
             viewAllEmployeesByDepartment();
@@ -132,45 +133,56 @@ function whatNext(option)
 
 /* Helper functions. */
 
+//Prints all employees.
 function viewAllEmployees()
 {
     printAllEmployeesQuery(basicPrompt);
 }
 
+//Prints all employees by specified department.
 function viewAllEmployeesByDepartment()
 {
     //Get all the departments.
-    getAllDepartmentsQuery(async result =>
+    getAllDepartmentsQuery(async departments =>
     {
         //Prompt the user to get the chosen department.
-        let chosenDepartment = await viewEmployeesByDepartmentPrompt(result.map(element => element.name));
+        let chosenDepartment = await viewEmployeesByDepartmentPrompt(departments.map(element => element.name));
         //Get and print the employees by chosen department.
-        printEmployeesByDepartmentQuery(result.find(element => element.name === chosenDepartment.department).id, basicPrompt);
+        printEmployeesByDepartmentQuery(departments.find(element => element.name === chosenDepartment.department).id, basicPrompt);
     });
 }
 
+//Prints all employees by specified manager.
 function viewAllEmployeesByManager()
 {
-    getAllManagersQuery(async result =>
+    //Gets all the managers.
+    getAllManagersQuery(async manager =>
     {
-        let chosenManager = await viewEmployeesByManagerPrompt(result.map(element => element.first_name + " " + element.last_name));
+        //Let user pick a manager.
+        let chosenManager = await viewEmployeesByManagerPrompt(manager.map(element => element.first_name + " " + element.last_name));
+        //Grab the managers id.
         let id;
-        result.forEach(element =>
+        manager.forEach(element =>
         {
             let names = chosenManager.manager.split(" ");
             if (element.first_name == names[0] && element.last_name == names[1])
                 id = element.id;
         });
+        //Prints the employees.
         printEmployeesByManagerQuery(id, basicPrompt);
     });
 }
 
+//Prompts the user for info to add a new employee.
 function addEmployee()
 {
+    //Get all roles.
     getAllRolesQuery(async roles =>
     {
+        //Get all employees.
         getAllManagersQuery(async managers =>
         {
+            //Gets info from the user.
             let answers = await addEmployeePrompt(roles.map(element => element.title), managers.map(element => element.first_name + " " + element.last_name));
             let roleId = roles.find(element => element.title === answers.role).id;
             let managerId;
@@ -185,6 +197,7 @@ function addEmployee()
     });
 }
 
+//Removes a user.
 function removeEmployee()
 {
     getAllEmployeesQuery(async result =>
@@ -201,6 +214,7 @@ function removeEmployee()
     });
 }
 
+//Changes an employees role based on user input.
 function updateEmployeeRole()
 {
     getAllEmployeesQuery(async employees =>
@@ -221,6 +235,7 @@ function updateEmployeeRole()
     });
 }
 
+//Changes an employees manager based on user input.
 function updateEmployeeManager()
 {
     getAllEmployeesQuery(async employees =>
@@ -241,16 +256,18 @@ function updateEmployeeManager()
                 if (element.first_name == names[0] && element.last_name == names[1])
                     managerId = element.id;
             });
-            updateEmployeeManagerRoleQuery(employeeId, managerId, basicPrompt);
+            updateEmployeeManagerQuery(employeeId, managerId, basicPrompt);
         });
     });
 }
 
+//Prints all roles to the screen.
 function viewAllRoles()
 {
     printAllRolesQuery(basicPrompt);
 }
 
+//Takes user input to add a new role.
 function addRole()
 {
     getAllDepartmentsQuery(async departments =>
@@ -260,6 +277,7 @@ function addRole()
     });
 }
 
+//Removes a chosen role.
 function removeRole()
 {
     getAllRolesQuery(async roles =>
@@ -269,17 +287,20 @@ function removeRole()
     });
 }
 
+//Prints all departments.
 function viewAllDepartments()
 {
     printAllDepartmentsQuery(basicPrompt);
 }
 
+//Adds a new department based on user input.
 async function addDepartment()
 {
     let name = await addDepartmentPrompt();
     addDepartmentQuery(name.department, basicPrompt);
 }
 
+//Removes a chosen department.
 function removeDepartment()
 {
     getAllDepartmentsQuery(async departments =>
@@ -289,6 +310,7 @@ function removeDepartment()
     });
 }
 
+//Gets the total budget for a specified department.
 function getBudgetByDepartment()
 {
     getAllDepartmentsQuery(async departments =>
