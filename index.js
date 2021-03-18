@@ -5,7 +5,8 @@ const {
     viewEmployeesByDepartmentPrompt,
     viewEmployeesByManagerPrompt,
     addEmployeePrompt,
-    removeEmployeePrompt } = require("./lib/questions");
+    removeEmployeePrompt,
+    updateEmployeeRolePrompt } = require("./lib/questions");
 const {
     open,
     close,
@@ -17,7 +18,8 @@ const {
     getAllRolesQuery,
     addEmployeeQuery,
     getAllEmployeesQuery,
-    deleteEmployeeQuery } = require("./lib/queries");
+    deleteEmployeeQuery,
+    updateEmployeeRoleQuery } = require("./lib/queries");
 
 /* Main functions. */
 
@@ -80,6 +82,9 @@ function whatNext(option)
         case "Remove employee":
             removeEmployee();
             break;
+        case "Update employee role":
+            updateEmployeeRole();
+            break;
         case "All done!":
             console.log("Thank you for using Employee Tracker.");
             close();//Closes the database connection.
@@ -132,11 +137,11 @@ function addEmployee()
             let roleId = roles.find(element => element.title === answers.role).id;
             let managerId;
             managers.forEach(element =>
-                {
-                    let names = answers.manager.split(" ");
-                    if (element.first_name == names[0] && element.last_name == names[1])
-                        managerId = element.id;
-                });
+            {
+                let names = answers.manager.split(" ");
+                if (element.first_name == names[0] && element.last_name == names[1])
+                    managerId = element.id;
+            });
             addEmployeeQuery(answers.first_name, answers.last_name, roleId, managerId, basicPrompt);
         });
     });
@@ -145,17 +150,37 @@ function addEmployee()
 function removeEmployee()
 {
     getAllEmployeesQuery(async result =>
+    {
+        let chosenEmployee = await removeEmployeePrompt(result.map(element => element.first_name + " " + element.last_name));
+        let id;
+        result.forEach(element =>
         {
-            let chosenEmployee = await removeEmployeePrompt(result.map(element => element.first_name + " " + element.last_name));
+            let names = chosenEmployee.employee.split(" ");
+            if (element.first_name == names[0] && element.last_name == names[1])
+                id = element.id;
+        });
+        deleteEmployeeQuery(id, basicPrompt);
+    });
+}
+
+function updateEmployeeRole()
+{
+    getAllEmployeesQuery(async employees =>
+    {
+        getAllRolesQuery(async roles =>
+        {
+            let answers = await updateEmployeeRolePrompt(employees.map(element => element.first_name + " " + element.last_name), roles.map(element => element.title));
+            let roleId = roles.find(element => element.title === answers.role).id;
             let id;
-            result.forEach(element =>
+            employees.forEach(element =>
             {
-                let names = chosenEmployee.employee.split(" ");
+                let names = answers.employee.split(" ");
                 if (element.first_name == names[0] && element.last_name == names[1])
                     id = element.id;
             });
-            deleteEmployeeQuery(id, basicPrompt);
+            updateEmployeeRoleQuery(id, roleId, basicPrompt);
         });
+    });
 }
 
 /* Function calls. */
