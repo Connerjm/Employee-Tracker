@@ -8,7 +8,8 @@ const {
     removeEmployeePrompt,
     updateEmployeeRolePrompt,
     updateEmployeeManagerPrompt,
-    addRolePrompt } = require("./lib/questions");
+    addRolePrompt,
+    removeRolePrompt } = require("./lib/questions");
 const {
     open,
     close,
@@ -24,7 +25,8 @@ const {
     updateEmployeeRoleQuery,
     updateEmployeeManagerRoleQuery,
     printAllRolesQuery,
-    addRoleQuery } = require("./lib/queries");
+    addRoleQuery,
+    deleteRoleQuery } = require("./lib/queries");
 
 /* Main functions. */
 
@@ -98,6 +100,9 @@ function whatNext(option)
             break;
         case "Add role":
             addRole();
+            break;
+        case "Remove role":
+            removeRole();
             break;
         case "All done!":
             console.log("Thank you for using Employee Tracker.");
@@ -227,12 +232,21 @@ function viewAllRoles()
     printAllRolesQuery(basicPrompt);
 }
 
-async function addRole()
+function addRole()
 {
     getAllDepartmentsQuery(async departments =>
     {
         let answers = await addRolePrompt(departments.map(element => element.name));
         addRoleQuery(answers.title, answers.salary, departments.find(element => element.name === answers.department).id, basicPrompt);
+    });
+}
+
+function removeRole()
+{
+    getAllRolesQuery(async roles =>
+    {
+        let chosenRole = await removeRolePrompt(roles.map(element => element.title));
+        deleteRoleQuery(roles.find(element => element.title === chosenRole.role).id, basicPrompt);
     });
 }
 
