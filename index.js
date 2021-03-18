@@ -6,7 +6,8 @@ const {
     viewEmployeesByManagerPrompt,
     addEmployeePrompt,
     removeEmployeePrompt,
-    updateEmployeeRolePrompt } = require("./lib/questions");
+    updateEmployeeRolePrompt,
+    updateEmployeeManagerPrompt } = require("./lib/questions");
 const {
     open,
     close,
@@ -19,7 +20,8 @@ const {
     addEmployeeQuery,
     getAllEmployeesQuery,
     deleteEmployeeQuery,
-    updateEmployeeRoleQuery } = require("./lib/queries");
+    updateEmployeeRoleQuery,
+    updateEmployeeManagerRole } = require("./lib/queries");
 
 /* Main functions. */
 
@@ -84,6 +86,9 @@ function whatNext(option)
             break;
         case "Update employee role":
             updateEmployeeRole();
+            break;
+        case "Update employee manager":
+            updateEmployeeManager();
             break;
         case "All done!":
             console.log("Thank you for using Employee Tracker.");
@@ -179,6 +184,31 @@ function updateEmployeeRole()
                     id = element.id;
             });
             updateEmployeeRoleQuery(id, roleId, basicPrompt);
+        });
+    });
+}
+
+function updateEmployeeManager()
+{
+    getAllEmployeesQuery(async employees =>
+    {
+        getAllEmployeesQuery(async managers =>
+        {
+            let answers = await updateEmployeeManagerPrompt(employees.map(element => element.first_name + " " + element.last_name), managers.map(element => element.first_name + " " + element.last_name));
+            let employeeId, managerId;
+            employees.forEach(element =>
+            {
+                let names = answers.employee.split(" ");
+                if (element.first_name == names[0] && element.last_name == names[1])
+                    employeeId = element.id;
+            });
+            managers.forEach(element =>
+            {
+                let names = answers.manager.split(" ");
+                if (element.first_name == names[0] && element.last_name == names[1])
+                    managerId = element.id;
+            });
+            updateEmployeeManagerRole(employeeId, managerId, basicPrompt);
         });
     });
 }
