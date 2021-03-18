@@ -85,10 +85,10 @@ function whatNext(option)
         case "View all employees"://Check option.
             viewAllEmployees()//Run assossiated function.
             break;
-        case "View all employees by department":
+        case "View employees by department":
             viewAllEmployeesByDepartment();
             break;
-        case "View all employees by manager":
+        case "View employees by manager":
             viewAllEmployeesByManager();
             break;
         case "Add employee":
