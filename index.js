@@ -4,13 +4,13 @@ const {
     defaultPrompt,
     viewEmployeesByDepartmentPrompt,
     viewEmployeesByManagerPrompt,
-    addEmployeePrompt,
-    removeEmployeePrompt,
     updateEmployeeRolePrompt,
     updateEmployeeManagerPrompt,
+    addEmployeePrompt,
     addRolePrompt,
-    removeRolePrompt,
     addDepartmentPrompt,
+    removeEmployeePrompt,
+    removeRolePrompt,
     removeDepartmentPrompt,
     getBudgetByDepartmentPrompt } = require("./lib/questions");
 const {
@@ -19,21 +19,21 @@ const {
     printAllEmployeesQuery,
     printEmployeesByDepartmentQuery,
     printEmployeesByManagerQuery,
-    getAllDepartmentsQuery,
-    getAllManagersQuery,
-    getAllRolesQuery,
-    addEmployeeQuery,
-    getAllEmployeesQuery,
-    deleteEmployeeQuery,
+    printAllRolesQuery,
+    printAllDepartmentsQuery,
     updateEmployeeRoleQuery,
     updateEmployeeManagerQuery,
-    printAllRolesQuery,
+    addEmployeeQuery,
     addRoleQuery,
-    deleteRoleQuery,
-    printAllDepartmentsQuery,
     addDepartmentQuery,
-    removeDepartmentQuery,
-    printBudgetForDepartmentQuery } = require("./lib/queries");
+    deleteEmployeeQuery,
+    deleteRoleQuery,
+    deleteDepartmentQuery,
+    printBudgetForDepartmentQuery,
+    getAllEmployeesQuery,
+    getAllManagersQuery,
+    getAllRolesQuery,
+    getAllDepartmentsQuery } = require("./lib/queries");
 
 /* Main functions. */
 
@@ -86,16 +86,16 @@ function whatNext(option)
             viewAllEmployees()//Run assossiated function.
             break;
         case "View employees by department":
-            viewAllEmployeesByDepartment();
+            viewEmployeesByDepartment();
             break;
         case "View employees by manager":
-            viewAllEmployeesByManager();
+            viewEmployeesByManager();
             break;
-        case "Add employee":
-            addEmployee();
+        case "View all roles":
+            viewAllRoles();
             break;
-        case "Remove employee":
-            removeEmployee();
+        case "View all departments":
+            viewAllDepartments();
             break;
         case "Update employee role":
             updateEmployeeRole();
@@ -103,20 +103,20 @@ function whatNext(option)
         case "Update employee manager":
             updateEmployeeManager();
             break;
-        case "View all roles":
-            viewAllRoles();
+        case "Add employee":
+            addEmployee();
             break;
         case "Add role":
             addRole();
             break;
-        case "Remove role":
-            removeRole();
-            break;
-        case "View all departments":
-            viewAllDepartments();
-            break;
         case "Add department":
             addDepartment();
+            break;
+        case "Remove employee":
+            removeEmployee();
+            break;
+        case "Remove role":
+            removeRole();
             break;
         case "Remove department":
             removeDepartment();
@@ -140,7 +140,7 @@ function viewAllEmployees()
 }
 
 //Prints all employees by specified department.
-function viewAllEmployeesByDepartment()
+function viewEmployeesByDepartment()
 {
     //Get all the departments.
     getAllDepartmentsQuery(async departments =>
@@ -153,7 +153,7 @@ function viewAllEmployeesByDepartment()
 }
 
 //Prints all employees by specified manager.
-function viewAllEmployeesByManager()
+function viewEmployeesByManager()
 {
     //Gets all the managers.
     getAllManagersQuery(async manager =>
@@ -173,45 +173,16 @@ function viewAllEmployeesByManager()
     });
 }
 
-//Prompts the user for info to add a new employee.
-function addEmployee()
+//Prints all roles to the screen.
+function viewAllRoles()
 {
-    //Get all roles.
-    getAllRolesQuery(async roles =>
-    {
-        //Get all employees.
-        getAllEmployeesQuery(async managers =>
-        {
-            //Gets info from the user.
-            let answers = await addEmployeePrompt(roles.map(element => element.title), managers.map(element => element.first_name + " " + element.last_name));
-            let roleId = roles.find(element => element.title === answers.role).id;
-            let managerId;
-            managers.forEach(element =>
-            {
-                let names = answers.manager.split(" ");
-                if (element.first_name == names[0] && element.last_name == names[1])
-                    managerId = element.id;
-            });
-            addEmployeeQuery(answers.first_name, answers.last_name, roleId, managerId, basicPrompt);
-        });
-    });
+    printAllRolesQuery(basicPrompt);
 }
 
-//Removes a user.
-function removeEmployee()
+//Prints all departments.
+function viewAllDepartments()
 {
-    getAllEmployeesQuery(async result =>
-    {
-        let chosenEmployee = await removeEmployeePrompt(result.map(element => element.first_name + " " + element.last_name));
-        let id;
-        result.forEach(element =>
-        {
-            let names = chosenEmployee.employee.split(" ");
-            if (element.first_name == names[0] && element.last_name == names[1])
-                id = element.id;
-        });
-        deleteEmployeeQuery(id, basicPrompt);
-    });
+    printAllDepartmentsQuery(basicPrompt);
 }
 
 //Changes an employees role based on user input.
@@ -261,10 +232,28 @@ function updateEmployeeManager()
     });
 }
 
-//Prints all roles to the screen.
-function viewAllRoles()
+//Prompts the user for info to add a new employee.
+function addEmployee()
 {
-    printAllRolesQuery(basicPrompt);
+    //Get all roles.
+    getAllRolesQuery(async roles =>
+    {
+        //Get all employees.
+        getAllEmployeesQuery(async managers =>
+        {
+            //Gets info from the user.
+            let answers = await addEmployeePrompt(roles.map(element => element.title), managers.map(element => element.first_name + " " + element.last_name));
+            let roleId = roles.find(element => element.title === answers.role).id;
+            let managerId;
+            managers.forEach(element =>
+            {
+                let names = answers.manager.split(" ");
+                if (element.first_name == names[0] && element.last_name == names[1])
+                    managerId = element.id;
+            });
+            addEmployeeQuery(answers.first_name, answers.last_name, roleId, managerId, basicPrompt);
+        });
+    });
 }
 
 //Takes user input to add a new role.
@@ -274,6 +263,30 @@ function addRole()
     {
         let answers = await addRolePrompt(departments.map(element => element.name));
         addRoleQuery(answers.title, answers.salary, departments.find(element => element.name === answers.department).id, basicPrompt);
+    });
+}
+
+//Adds a new department based on user input.
+async function addDepartment()
+{
+    let name = await addDepartmentPrompt();
+    addDepartmentQuery(name.department, basicPrompt);
+}
+
+//Removes a user.
+function removeEmployee()
+{
+    getAllEmployeesQuery(async result =>
+    {
+        let chosenEmployee = await removeEmployeePrompt(result.map(element => element.first_name + " " + element.last_name));
+        let id;
+        result.forEach(element =>
+        {
+            let names = chosenEmployee.employee.split(" ");
+            if (element.first_name == names[0] && element.last_name == names[1])
+                id = element.id;
+        });
+        deleteEmployeeQuery(id, basicPrompt);
     });
 }
 
@@ -287,26 +300,13 @@ function removeRole()
     });
 }
 
-//Prints all departments.
-function viewAllDepartments()
-{
-    printAllDepartmentsQuery(basicPrompt);
-}
-
-//Adds a new department based on user input.
-async function addDepartment()
-{
-    let name = await addDepartmentPrompt();
-    addDepartmentQuery(name.department, basicPrompt);
-}
-
 //Removes a chosen department.
 function removeDepartment()
 {
     getAllDepartmentsQuery(async departments =>
     {
         let chosenDepartment = await removeDepartmentPrompt(departments.map(element => element.name));
-        removeDepartmentQuery(departments.find(element => element.name === chosenDepartment.department).id, basicPrompt);
+        deleteDepartmentQuery(departments.find(element => element.name === chosenDepartment.department).id, basicPrompt);
     });
 }
 
