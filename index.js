@@ -34,6 +34,7 @@ const {
     getAllManagersQuery,
     getAllRolesQuery,
     getAllDepartmentsQuery } = require("./lib/queries");
+const chalk = require("chalk");
 
 /* Main functions. */
 
@@ -41,7 +42,7 @@ const {
 function init()
 {
     //Look... Just know that this is ascii art. I know it looks like I had a stroke, don't worry about it.
-    console.log(`
+    console.log(chalk.magenta(`
 --------------------------------------------------------------------------------------------------------------
 |      ___           ___           ___           ___       ___           ___           ___           ___     |
 |     /\\  \\         /\\__\\         /\\  \\         /\\__\\     /\\  \\         |\\__\\         /\\  \\         /\\  \\    |
@@ -65,7 +66,7 @@ function init()
 |          /\:/  /        /\:/  /       |\:\:/  /        /\:/  /     \\\:\\/\:/  /     \\\:\\ \\/__/      |\:|\\/__/        |
 |         /\:/  /        /\:/  /        /\:/  /        /\:/  /       \\\:\:/  /       \\\:\\__\\        |\:|  |          |
 |         \\/__/         \\/__/         \\/__/         \\/__/         \\/__/         \\/__/         \\|__|          |
---------------------------------------------------------------------------------------------------------------`);
+--------------------------------------------------------------------------------------------------------------`));
     open();//Opens the database connection.
     basicPrompt();//Default prompt before any specific action begins.
 }
@@ -125,7 +126,7 @@ function whatNext(option)
             getBudgetByDepartment();
             break;
         case "All done!":
-            console.log("Thank you for using Employee Tracker.");
+            console.log(chalk.magenta("\nThank you for using Employee Tracker."));
             close();//Closes the database connection.
             process.exit();//Ends the program process.
     }
