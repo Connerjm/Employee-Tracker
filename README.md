@@ -1,5 +1,10 @@
 # Employee Tracker
 
+[![owner Owner](https://img.shields.io/badge/Owner-Connerjm-green)](https://github.com/connerjm)
+[![tech Tech](https://img.shields.io/badge/Tech-NodeJS-blue)](https://github.com/topics/node-js)
+[![tech Tech](https://img.shields.io/badge/Tech-MySQL-blue)](https://github.com/topics/mysql)
+[![license License](https://img.shields.io/badge/License-Unlicense-orange)](https://www.opensource.org/licenses/unlicense)
+
 ## Table of Contents
 
 - [Description](#description)
