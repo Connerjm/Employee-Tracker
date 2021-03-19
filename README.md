@@ -54,7 +54,9 @@ npm start
 
 ## Demonstration
 
-![Demonstration](#)
+Simple demo of a few of the features. Notice, it comes complete with validations and checks so you can't remove an entry that another entry realizes on.
+
+![Demonstration](./assets/employee_tracker.gif)
 
 ## License
 
