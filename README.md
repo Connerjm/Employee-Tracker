@@ -4,6 +4,7 @@
 
 - [Description](#description)
 - [Features](#features)
+- [Links](#links)
 - [Usage](#usage)
 - [Demonstration](#demonstration)
 - [License](#license)
@@ -26,6 +27,10 @@ Users of this application are able to:
 - [x] View employees by manager.
 - [x] Delete departments, roles, and employees.
 - [x] View the total utilized budget of a deparment.
+
+## Links
+
+[GitHub Repo](https://github.com/Connerjm/Employee-Tracker)
 
 ## Usage
 
